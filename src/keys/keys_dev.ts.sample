@@ -1,0 +1,6 @@
+
+const keys = {
+  mongoURI: "mongodb://..."
+}
+
+export default keys
