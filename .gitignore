@@ -120,6 +120,7 @@ dist
 
 # Builds
 build
+test-client/build
 
 # keys
 src/keys/keys_dev.ts

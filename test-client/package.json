@@ -1,0 +1,18 @@
+{
+  "name": "test-client",
+  "version": "0.1.0",
+  "private": true,
+  "author": "LeoYulinLi",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "tsc",
+    "start": "node ./build/app.js"
+  },
+  "dependencies": {
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/socket.io-client": "^1.4.33"
+  }
+}
