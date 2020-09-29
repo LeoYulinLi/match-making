@@ -10,8 +10,26 @@ socket.on("connect", () => {
     id: "1234",
     level: 0.5
   })
-  socket.emit("enqueue", {
-    id: "234",
+  setTimeout(() => {
+    socket.emit("enqueue", {
+      id: "234",
+      level: 0.5
+    })
+  }, 1000)
+})
+
+const socket2 = client.connect("http://localhost:3000?apiKey=defg")
+
+socket2.on("connect", () => {
+  socket2.on("match", (data: any) => {
+    console.log(data)
+  })
+  socket2.emit("enqueue", {
+    id: "abcd",
+    level: 0.5
+  })
+  socket2.emit("enqueue", {
+    id: "defg",
     level: 0.5
   })
 })

@@ -38,9 +38,9 @@ interface Player {
   level: number
 }
 
-const players: Player[] = []
 
 server.on("connection", (socket) => {
+  const players: Player[] = []
   socket.on("enqueue", async (player: Player) => {
     console.log(`enqueued player with id ${player.id} at level ${player.level}`)
     if (players.length > 0) {
