@@ -26,10 +26,11 @@ socket2.on("connect", () => {
   })
   socket2.emit("enqueue", {
     id: "abcd",
-    level: 0.5
+    level: 0.25
   })
   socket2.emit("enqueue", {
     id: "defg",
     level: 0.5
   })
+  socket2.emit("config", { threshold: 0.3 })
 })

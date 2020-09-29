@@ -38,17 +38,44 @@ interface Player {
   level: number
 }
 
+interface Config {
+  threshold: number
+}
+
 
 server.on("connection", (socket) => {
-  const players: Player[] = []
-  socket.on("enqueue", async (player: Player) => {
-    console.log(`enqueued player with id ${player.id} at level ${player.level}`)
-    if (players.length > 0) {
-      socket.emit("match", [player, players[0]])
-      console.log(`matched player ${player.id} and ${players[0].id}`)
-      delete players[0]
+
+  let players: Player[] = []
+
+  let config: Config = {
+    threshold: 0.2
+  }
+
+  function matchPlayer(newPlayer: Player) {
+    console.log(`enqueued player with id ${ newPlayer.id } at level ${ newPlayer.level }`)
+    const matchingPlayerIndex = players.findIndex((player) => {
+      return player.level - config.threshold < newPlayer.level && player.level + config.threshold > newPlayer.level
+    })
+    if (matchingPlayerIndex != -1) {
+      socket.emit("match", [newPlayer, players[matchingPlayerIndex]])
+      console.log(`matched player ${ newPlayer.id } and ${ players[matchingPlayerIndex].id }`)
+      delete players[matchingPlayerIndex]
     } else {
-      players.push(player)
+      players.push(newPlayer)
     }
+  }
+
+  socket.on("enqueue", matchPlayer)
+  socket.on("dequeue", (player: Player) => {
+    delete players[players.findIndex(it => it.id === player.id)]
   })
+
+  socket.on("config", (newConfig: Config) => {
+    config = newConfig
+    const playersCopy = [...players]
+    players = []
+    playersCopy.forEach(player => matchPlayer(player))
+  })
+
+
 })
