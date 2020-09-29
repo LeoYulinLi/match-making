@@ -33,8 +33,22 @@ server.use(((socket, next) => {
   next(new Error('authentication error'))
 }))
 
+interface Player {
+  id: string
+  level: number
+}
+
+const players: Player[] = []
+
 server.on("connection", (socket) => {
-  socket.on("enqueue", async ({ id, level }) => {
-    console.log(`enqueued player with id ${id} at level ${level}`)
+  socket.on("enqueue", async (player: Player) => {
+    console.log(`enqueued player with id ${player.id} at level ${player.level}`)
+    if (players.length > 0) {
+      socket.emit("match", [player, players[0]])
+      console.log(`matched player ${player.id} and ${players[0].id}`)
+      delete players[0]
+    } else {
+      players.push(player)
+    }
   })
 })
