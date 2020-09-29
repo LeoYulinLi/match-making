@@ -22,10 +22,10 @@ if (keys.mongoURI) {
 //
 // user.save()
 
-server.use(((socket, next) => {
+server.use((async (socket, next) => {
   const apiKey = socket.handshake.query.apiKey
   if (apiKey) {
-    const user = User.findOne({ apiKey })
+    const user = await User.findOne({ apiKey })
     if (user) {
       next()
     }
