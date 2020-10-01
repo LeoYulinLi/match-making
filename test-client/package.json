@@ -7,7 +7,7 @@
   "scripts": {
     "tsc": "tsc",
     "build": "tsc",
-    "start": "node ./build/app.js"
+    "start": "tsc && node ./build/app.js"
   },
   "dependencies": {
     "socket.io-client": "^2.3.0"
